@@ -42,11 +42,17 @@ class UserController extends Controller
 
             }
 
-            return response()->json([
-                "message" => "Credentials Not Match",
-            ]);
         }
 
 
+    }
+
+    // 2. Get User Data
+    public function getUserData(Request $request)
+    {
+        return response()->json([
+            "message" => "Data Found",
+            "data" => $request->user()
+        ]);
     }
 }

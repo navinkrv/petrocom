@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\JobController;
+use App\Http\Middleware\userTypeAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -20,3 +22,9 @@ use App\Http\Controllers\UserController;
 // });
 
 Route::post("/user/login", [UserController::class, "login"]);
+Route::get("/user/getUserData", [UserController::class, "getUserData"])->middleware("auth:sanctum");
+
+
+// Jobs
+
+Route::post("/job/create", [JobController::class, "createJob"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
