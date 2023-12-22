@@ -22,12 +22,6 @@ use App\Http\Controllers\UserController;
 // });
 
 
-//DB
-
-Route::get('/migrate', function () {
-    \Artisan::call('migrate');
-    dd('migrated!');
-});
 
 // Users
 
