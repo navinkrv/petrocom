@@ -21,6 +21,16 @@ use App\Http\Controllers\UserController;
 //     return $request->user();
 // });
 
+
+//DB
+
+Route::get('/migrate', function () {
+    \Artisan::call('migrate');
+    dd('migrated!');
+});
+
+// Users
+
 Route::post("/user/login", [UserController::class, "login"]);
 Route::get("/user/getUserData", [UserController::class, "getUserData"])->middleware("auth:sanctum");
 
