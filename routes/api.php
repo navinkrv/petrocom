@@ -28,3 +28,4 @@ Route::get("/user/getUserData", [UserController::class, "getUserData"])->middlew
 // Jobs
 
 Route::post("/job/create", [JobController::class, "createJob"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
+Route::get("/job/getJobListAdmin", [JobController::class, "getJobListAdmin"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);

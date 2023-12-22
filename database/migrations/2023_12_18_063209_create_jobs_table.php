@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string("date");
             $table->integer("multidrop");
             $table->json("job_location_data");
+            $table->string("vehicle");
             $table->string("status");
             $table->string("pod");
             $table->string("invoice_status");
