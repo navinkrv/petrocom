@@ -16,10 +16,3 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-//DB
-
-Route::get('/migrate', function () {
-    \Artisan::call('migrate');
-    dd('migrated!');
-});
