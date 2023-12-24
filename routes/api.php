@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ClientDetailController;
 use App\Http\Controllers\JobController;
+use App\Http\Middleware\Admins;
+use App\Http\Middleware\SAdmin;
 use App\Http\Middleware\userTypeAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +33,8 @@ Route::get("/user/getUserData", [UserController::class, "getUserData"])->middlew
 
 //client
 Route::post("/client/createClient", [ClientDetailController::class, "createClient"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
+Route::get("/client/getClientListAdmin/{pgno}", [ClientDetailController::class, "getClientListAdmin"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
+Route::post("/client/createClientAccount", [ClientDetailController::class, "createClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 
 
 // Jobs

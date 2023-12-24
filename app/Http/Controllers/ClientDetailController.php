@@ -14,6 +14,8 @@ class ClientDetailController extends Controller
             $validation = $request->validate([
                 "client_name" => "required",
                 "company_name" => "required",
+                "primary_email" => "required | email",
+                "sec_email" => "required | email",
                 "phone" => "required",
                 "sec_phone" => "required"
             ]);
@@ -32,6 +34,8 @@ class ClientDetailController extends Controller
 
                     $client->client_name = $request->client_name;
                     $client->company_name = $request->company_name;
+                    $client->primary_email = $request->primary_email;
+                    $client->sec_email = $request->sec_email;
                     $client->phone = $request->phone;
                     $client->sec_phone = $request->sec_phone;
                     $client->photo = $photo_access_location;
@@ -51,8 +55,49 @@ class ClientDetailController extends Controller
 
         }
     }
+
+    public function getClientListAdmin(Request $request, string $pgno)
+    {
+        if ($request->userType == 1 || $request->userType == 2) {
+
+
+
+            $clientList = ClientDetail::all()->getIterator()->getArrayCopy();
+
+            if (count($clientList) != 0) {
+
+                $dataCount = count($clientList);
+                $pageCount = 0;
+                if ($dataCount % 10 == 0) {
+                    $pageCount = $dataCount / 10;
+                } else {
+                    $pageCount = ($dataCount / 10) + 1;
+                }
+
+                $clientListFinal = array_slice($clientList, ($pgno - 1) * 10, 10);
+
+
+                return response()->json([
+                    "message" => "success",
+                    "data" => $clientListFinal
+                ]);
+            } else {
+                return response()->json([
+                    "message" => "NO DATA FOUND"
+                ]);
+            }
+        } else {
+            return response()->json([
+                "message" => "Unauthorised"
+            ]);
+
+        }
+    }
+
     public function createClientAccount(Request $request)
     {
+        $validation = $request->validate([
 
+        ]);
     }
 }
