@@ -27,7 +27,7 @@ class ClientDetailController extends Controller
                 $photo_upload_location = "public/client_photo";
                 $photo_access_location = env("UPLOAD_LOCATION") . "/clientPhoto/" . $photo_name;
 
-                if ($photo->getMimeType() == "image/jpg") {
+                if ($photo->getMimeType() == "image/jpeg") {
                     $photo->storePubliclyAs($photo_upload_location, $photo_name);
 
                     $client = new ClientDetail();
@@ -42,15 +42,23 @@ class ClientDetailController extends Controller
                     $client->save();
 
                     return response()->json([
-                        "message" => "success",
+                        "message" => "Saved Successfully",
+                        "status" => 1
 
                     ]);
+                } else {
+                    return response()->json([
+                        "message" => "Image must be JPEG",
+                        "status" => 0
+
+                    ]);
+
                 }
             }
         } else {
             return response()->json([
                 "message" => "Unauthorised",
-
+                "status" => 0
             ]);
 
         }
@@ -97,7 +105,8 @@ class ClientDetailController extends Controller
     public function createClientAccount(Request $request)
     {
         $validation = $request->validate([
-
+            'email' => "required | email",
+            "password" => "required"
         ]);
     }
 }
