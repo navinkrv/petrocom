@@ -25,7 +25,7 @@ class ClientDetailController extends Controller
                 $photo = $request->file("photo");
                 $photo_name = $request->client_name . " " . $request->company_name . ".jpg";
                 $photo_upload_location = "public/client_photo";
-                $photo_access_location = env("UPLOAD_LOCATION") . "clientPhoto/" . $photo_name;
+                $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
 
                 if ($photo->getMimeType() == "image/jpeg") {
                     $photo->storePubliclyAs($photo_upload_location, $photo_name);
