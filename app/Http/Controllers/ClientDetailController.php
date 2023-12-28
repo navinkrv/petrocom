@@ -109,7 +109,7 @@ class ClientDetailController extends Controller
 
     public function getClientDetailsById(Request $request, string $id)
     {
-        $client = ClientDetail::find($id);
+        $client = ClientDetail::where("id", $id)->with("user")->get()->first();
 
         if ($client) {
             return response()->json([
