@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\ClientDetail;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class ClientDetailController extends Controller
 {
@@ -131,5 +133,20 @@ class ClientDetailController extends Controller
             'email' => "required | email",
             "password" => "required"
         ]);
+
+        if ($validation) {
+            $user = new User();
+            $user->client_id = $request->client_id;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->type = 3;
+
+            $user->save();
+            return response()->json([
+                "message" => "Created Successfully",
+                "status" => 1
+            ]);
+
+        }
     }
 }
