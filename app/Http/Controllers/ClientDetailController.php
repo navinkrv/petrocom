@@ -87,21 +87,43 @@ class ClientDetailController extends Controller
 
                 return response()->json([
                     "message" => "success",
-                    "data" => $clientListFinal
+                    "data" => $clientListFinal,
+                    "status" => 1
                 ]);
             } else {
                 return response()->json([
-                    "message" => "NO DATA FOUND"
+                    "message" => "No data found",
+                    "status" => 0
                 ]);
             }
         } else {
             return response()->json([
-                "message" => "Unauthorised"
+                "message" => "Unauthorised",
+                "status" => 0
             ]);
 
         }
     }
 
+    public function getClientDetailsById(Request $request, string $id)
+    {
+        $client = ClientDetail::find($id);
+
+        if ($client) {
+            return response()->json([
+                "message" => "Data found",
+                "data" => $client,
+                "status" => 1
+            ]);
+
+        } else {
+            return response()->json([
+                "message" => "Invalid ID",
+                "status" => 0
+            ]);
+
+        }
+    }
     public function createClientAccount(Request $request)
     {
         $validation = $request->validate([
