@@ -149,4 +149,24 @@ class ClientDetailController extends Controller
 
         }
     }
+
+    public function listClientAccount(Request $request, string $id)
+    {
+        $accounts = User::select("id,client_id,email")->where("client_id", $id)->get()->getIterator()->getArrayCopy();
+
+        if (count($accounts) < 1) {
+            return response()->json([
+                "message" => "No data found",
+                "status" => 0
+            ]);
+
+        } else {
+            return response()->json([
+                "message" => "Data found",
+                "status" => 1,
+                "data" => $accounts
+            ]);
+
+        }
+    }
 }
