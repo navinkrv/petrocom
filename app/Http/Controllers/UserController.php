@@ -50,9 +50,32 @@ class UserController extends Controller
     // 2. Get User Data
     public function getUserData(Request $request)
     {
+        $user = User::where("id", $request->user()->id)->with("clientDetails")->get()->first();
         return response()->json([
             "message" => "Data Found",
-            "data" => $request->user()
+            "status" => 0,
+            "data" => $user
         ]);
+    }
+
+    public function createAdminAccount(Request $request)
+    {
+        $validation = $request->validate([
+            "email" => "required",
+            "password" => "required"
+        ]);
+
+        if ($validation) {
+            $user = new User();
+            $user->email = $request->email;
+            $user->password = $request->password;
+            $user->save();
+
+            return response()->json([
+                "message" => "Saved Successfully",
+                "status" => 1
+            ]);
+
+        }
     }
 }

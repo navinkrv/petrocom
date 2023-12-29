@@ -169,4 +169,33 @@ class ClientDetailController extends Controller
 
         }
     }
+
+    public function updateClientPassword(Request $request)
+    {
+        $validation = $request->validate([
+            "user_id" => "required",
+            "password" => "required"
+        ]);
+
+        if ($validation) {
+            $user = User::find($request->user_id);
+
+            if ($user) {
+                $user->password = $request->password;
+                $user->save();
+                return response()->json([
+                    "message" => "Password Updated",
+                    "status" => 1,
+                ]);
+
+            } else {
+                return response()->json([
+                    "message" => "Something went wrong",
+                    "status" => 0
+                ]);
+
+            }
+
+        }
+    }
 }
