@@ -170,6 +170,10 @@ class ClientDetailController extends Controller
         }
     }
 
+    public function deleteClient(Request $request, string $id)
+    {
+
+    }
     public function updateClientPassword(Request $request)
     {
         $validation = $request->validate([
@@ -181,7 +185,7 @@ class ClientDetailController extends Controller
             $user = User::find($request->user_id);
 
             if ($user) {
-                $user->password = $request->password;
+                $user->password = Hash::make($request->password);
                 $user->save();
                 return response()->json([
                     "message" => "Password Updated",

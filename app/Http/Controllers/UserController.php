@@ -78,4 +78,26 @@ class UserController extends Controller
 
         }
     }
+
+    public function listAdminAccount()
+    {
+    }
+    public function updateAdminPassword(Request $request)
+    {
+        $validation = $request->validate([
+            "id" => "required",
+            "password" => "required"
+        ]);
+
+        $user = User::find($request->id);
+        $user->password = Hash::make($request->password);
+
+        $user->save();
+        return response()->json([
+            "message" => "Updated Successfully",
+            "status" => 1
+        ]);
+
+    }
+
 }
