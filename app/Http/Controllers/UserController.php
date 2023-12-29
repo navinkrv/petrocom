@@ -68,7 +68,8 @@ class UserController extends Controller
         if ($validation) {
             $user = new User();
             $user->email = $request->email;
-            $user->password = $request->password;
+            $user->password = Hash::make($request->password);
+            $user->type = 2;
             $user->save();
 
             return response()->json([
@@ -81,7 +82,7 @@ class UserController extends Controller
 
     public function listAdminAccount(Request $request)
     {
-
+        // $admins = User::
     }
     public function updateAdminPassword(Request $request)
     {
