@@ -85,7 +85,7 @@ class UserController extends Controller
             } else {
                 return response()->json([
                     "message" => "Account already exists",
-                    "status" => 1
+                    "status" => 0
                 ]);
 
             }
