@@ -79,8 +79,9 @@ class UserController extends Controller
         }
     }
 
-    public function listAdminAccount()
+    public function listAdminAccount(Request $request)
     {
+
     }
     public function updateAdminPassword(Request $request)
     {
