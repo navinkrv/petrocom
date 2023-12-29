@@ -83,7 +83,7 @@ class UserController extends Controller
     public function listAdminAccount(Request $request)
     {
         $admins = User::where("type", 2)->get()->getIterator()->getArrayCopy();
-        if (count($admins) < 1) {
+        if (count($admins) > 1) {
             return response()->json([
                 "message" => "Data found",
                 "status" => 1,
@@ -94,7 +94,7 @@ class UserController extends Controller
             return response()->json([
                 "message" => "Data not found",
                 "status" => 0,
-                "data" => $admins
+
             ]);
 
         }
