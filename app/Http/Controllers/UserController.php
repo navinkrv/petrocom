@@ -66,16 +66,30 @@ class UserController extends Controller
         ]);
 
         if ($validation) {
-            $user = new User();
-            $user->email = $request->email;
-            $user->password = Hash::make($request->password);
-            $user->type = 2;
-            $user->save();
+            $existingUser = User::where("email", $request->email)->get()->first();
 
-            return response()->json([
-                "message" => "Created Successfully",
-                "status" => 1
-            ]);
+            if (!$existingUser) {
+                $user = new User();
+                $user->email = $request->email;
+                $user->password = Hash::make($request->password);
+                $user->type = 2;
+
+
+                $user->save();
+
+                return response()->json([
+                    "message" => "Created Successfully",
+                    "status" => 1
+                ]);
+
+            } else {
+                return response()->json([
+                    "message" => "Account already exists",
+                    "status" => 1
+                ]);
+
+            }
+
 
         }
     }
