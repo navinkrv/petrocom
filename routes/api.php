@@ -31,7 +31,8 @@ use App\Http\Controllers\UserController;
 Route::post("/user/login", [UserController::class, "login"]);
 Route::get("/user/getUserData", [UserController::class, "getUserData"])->middleware("auth:sanctum");
 Route::post("/user/createAdminAccount", [UserController::class, "createAdminAccount"])->middleware("auth:sanctum")->middleware(SAdmin::class);
-Route::post("/user/updateAdminPassword", [UserController::class, "updateAdminPassword"])->middleware("auth:sanctum")->middleware(Admins::class);
+Route::post("/user/updateAdminPassword", [UserController::class, "updateAdminPassword"])->middleware("auth:sanctum")->middleware(SAdmin::class);
+Route::post("/user/listAdminAccount", [UserController::class, "listAdminAccount"])->middleware("auth:sanctum")->middleware(SAdmin::class);
 
 //client
 Route::post("/client/createClient", [ClientDetailController::class, "createClient"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);

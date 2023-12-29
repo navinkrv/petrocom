@@ -73,7 +73,7 @@ class UserController extends Controller
             $user->save();
 
             return response()->json([
-                "message" => "Saved Successfully",
+                "message" => "Created Successfully",
                 "status" => 1
             ]);
 
@@ -82,7 +82,21 @@ class UserController extends Controller
 
     public function listAdminAccount(Request $request)
     {
-        // $admins = User::
+        $admins = User::where("type", 2)->get()->getIterator()->getArrayCopy();
+        if (count($admins) < 1) {
+            return response()->json([
+                "message" => "Data found",
+                "status" => 1,
+                "data" => $admins
+            ]);
+
+        } else {
+            return response()->json([
+                "message" => "Data not found",
+                "status" => 0
+            ]);
+
+        }
     }
     public function updateAdminPassword(Request $request)
     {
