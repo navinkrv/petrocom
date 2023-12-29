@@ -93,7 +93,8 @@ class UserController extends Controller
         } else {
             return response()->json([
                 "message" => "Data not found",
-                "status" => 0
+                "status" => 0,
+                "data" => $admins
             ]);
 
         }
