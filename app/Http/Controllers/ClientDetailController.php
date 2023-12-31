@@ -174,10 +174,11 @@ class ClientDetailController extends Controller
     {
 
     }
-    public function updateClientPassword(Request $request)
+    public function updateClientAccount(Request $request)
     {
         $validation = $request->validate([
             "user_id" => "required",
+            "email" => "required",
             "password" => "required"
         ]);
 
@@ -185,6 +186,7 @@ class ClientDetailController extends Controller
             $user = User::find($request->user_id);
 
             if ($user) {
+                $user->email = $request->email;
                 $user->password = Hash::make($request->password);
                 $user->save();
                 return response()->json([
