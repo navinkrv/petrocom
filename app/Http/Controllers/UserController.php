@@ -20,8 +20,8 @@ class UserController extends Controller
 
         if ($validator) {
             $existingUser = User::whereRaw("email= '$request->email'")->get()->first();
-            if ($existingUser->type == 3) {
-                if ($existingUser) {
+            if ($existingUser) {
+                if ($existingUser->type == 3) {
                     $client = ClientDetail::where("id", $existingUser->client_id)->get()->first();
 
                     if ($client->approved == 1) {
