@@ -28,34 +28,6 @@ class JobController extends Controller
 
         if ($validation) {
 
-
-            // {
-//                 "client_id":1,
-//                 "job_id" : "job_0001",
-//                 "date" : "Dec 19 2023 23:37:51",
-//                 "multidrop" : "1",
-//                 "job_location_data" : [{
-//                                         "from":"delhi",
-//                                         "to":"pune"
-//                                     },{
-//                                         "from":"delhi",
-//                                         "to":"pune"
-//                                     }],
-//                 "vehicle":"DL je 2233",
-//                 "status" : "SUccess",
-//                 "pod" : "FILE.pdf",
-//                 "invoice_status" : "Success",
-//                 "invoice" : "FILE.pdf",
-//                 "eta" : "22:43",
-//                 "update" : [
-//                     "this is demo text",
-//                     "this is demo text"
-//                 ]
-// }
-
-
-
-
             $job = new Job();
 
             // file upload handling
@@ -112,20 +84,22 @@ class JobController extends Controller
     }
 
 
-    public function getJobListAdmin(Request $request)
+    public function getJobListByIDAdmin(Request $request, string $id)
     {
-        $userType = $request->userType;
 
-        if ($userType == 1 || $userType == 2) {
-            $jobList = Job::all()->getIterator()->getArrayCopy();
+        $jobList = Job::where("client_id", $id)->get()->getIterator()->getArrayCopy();
+        if (count($jobList) > 0) {
+
             return response()->json([
                 "message" => "success",
+                "status" => 1,
                 "data" => $jobList
             ]);
-
         } else {
+
             return response()->json([
-                "message" => "Unauthorized"
+                "message" => "No data available",
+                "status" => 0
             ]);
 
         }

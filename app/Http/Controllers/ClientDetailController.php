@@ -178,7 +178,7 @@ class ClientDetailController extends Controller
             $client->approved = 0;
             $client->save();
             return response()->json([
-                "message" => "Successfully updated",
+                "message" => "Successfully deleted",
                 "status" => 1
             ]);
 
