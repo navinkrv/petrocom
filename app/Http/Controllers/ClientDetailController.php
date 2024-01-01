@@ -41,6 +41,7 @@ class ClientDetailController extends Controller
                     $client->phone = $request->phone;
                     $client->sec_phone = $request->sec_phone;
                     $client->photo = $photo_access_location;
+                    $client->approved = 1;
                     $client->save();
 
                     return response()->json([
@@ -72,7 +73,7 @@ class ClientDetailController extends Controller
 
 
 
-            $clientList = ClientDetail::all()->getIterator()->getArrayCopy();
+            $clientList = ClientDetail::where("approved", 1)->get()->getIterator()->getArrayCopy();
 
             if (count($clientList) != 0) {
 
@@ -172,7 +173,22 @@ class ClientDetailController extends Controller
 
     public function deleteClient(Request $request, string $id)
     {
+        $client = ClientDetail::where("id", $id)->get()->first();
+        if ($client) {
+            $client->approved = 0;
+            $client->save();
+            return response()->json([
+                "message" => "Successfully updated",
+                "status" => 1
+            ]);
 
+        } else {
+            return response()->json([
+                "message" => "Invalid ID",
+                "status" => 0
+            ]);
+
+        }
     }
     public function updateClientAccount(Request $request)
     {

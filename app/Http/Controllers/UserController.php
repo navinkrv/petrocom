@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClientDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -21,23 +22,34 @@ class UserController extends Controller
             $existingUser = User::whereRaw("email= '$request->email'")->get()->first();
 
             if ($existingUser) {
-                $client =
-                    $token = $existingUser->createToken("auth_token");
+                $client = ClientDetail::where("id", $existingUser->client_id)->get()->first();
 
-                if (Hash::check($request->password, $existingUser->password)) {
-                    return response()->json([
-                        "message" => "Login Successfull",
-                        "status" => 1,
-                        "token" => $token->plainTextToken,
-                        "type" => $existingUser->type
-                    ]);
+                if ($client->approved = 1) {
+                    $token = $existingUser->createToken("auth_token");
+                    if (Hash::check($request->password, $existingUser->password)) {
+                        return response()->json([
+                            "message" => "Login Successfull",
+                            "status" => 1,
+                            "token" => $token->plainTextToken,
+                            "type" => $existingUser->type
+                        ]);
+                    } else {
+                        return response()->json([
+                            "message" => "Incorrect password",
+                            "status" => 0
+                        ]);
+
+                    }
+
                 } else {
                     return response()->json([
-                        "message" => "Incorrect password",
+                        "message" => "Account Disabled contact Administrator",
                         "status" => 0
                     ]);
 
                 }
+
+
             } else {
                 return response()->json([
                     "message" => "User Not Found"

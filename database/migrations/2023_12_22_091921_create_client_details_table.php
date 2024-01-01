@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->string("phone");
             $table->string("sec_phone");
             $table->string("photo");
-            $table->integer("approve");
+            $table->integer("approved");
         });
     }
 
