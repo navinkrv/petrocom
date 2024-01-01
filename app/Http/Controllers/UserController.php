@@ -21,17 +21,20 @@ class UserController extends Controller
             $existingUser = User::whereRaw("email= '$request->email'")->get()->first();
 
             if ($existingUser) {
-                $token = $existingUser->createToken("auth_token");
+                $client =
+                    $token = $existingUser->createToken("auth_token");
 
                 if (Hash::check($request->password, $existingUser->password)) {
                     return response()->json([
                         "message" => "Login Successfull",
+                        "status" => 1,
                         "token" => $token->plainTextToken,
                         "type" => $existingUser->type
                     ]);
                 } else {
                     return response()->json([
-                        "message" => "Incorrect password"
+                        "message" => "Incorrect password",
+                        "status" => 0
                     ]);
 
                 }

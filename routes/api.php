@@ -31,7 +31,7 @@ use App\Http\Controllers\UserController;
 Route::post("/user/login", [UserController::class, "login"]);
 Route::get("/user/getUserData", [UserController::class, "getUserData"])->middleware("auth:sanctum");
 Route::post("/user/createAdminAccount", [UserController::class, "createAdminAccount"])->middleware("auth:sanctum")->middleware(SAdmin::class);
-Route::post("/user/updateClientAccount", [UserController::class, "updateClientAccount"])->middleware("auth:sanctum")->middleware(SAdmin::class);
+Route::post("/user/updateAdminPassword", [UserController::class, "updateAdminPassword"])->middleware("auth:sanctum")->middleware(SAdmin::class);
 Route::get("/user/listAdminAccount", [UserController::class, "listAdminAccount"])->middleware("auth:sanctum")->middleware(SAdmin::class);
 
 //client
@@ -41,7 +41,7 @@ Route::post("/client/createClientAccount", [ClientDetailController::class, "crea
 Route::get("/client/getClientDetailsById/{id}", [ClientDetailController::class, "getClientDetailsById"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::post("/client/createClientAccount", [ClientDetailController::class, "createClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::post("/client/listClientAccount/{id}", [ClientDetailController::class, "listClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
-Route::post("/client/updateClientPassword", [ClientDetailController::class, "updateClientPassword"])->middleware("auth:sanctum")->middleware(Admins::class);
+Route::post("/client/updateClientAccount", [ClientDetailController::class, "updateClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 
 
 // Jobs
