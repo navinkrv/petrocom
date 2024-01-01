@@ -20,11 +20,36 @@ class UserController extends Controller
 
         if ($validator) {
             $existingUser = User::whereRaw("email= '$request->email'")->get()->first();
+            if ($existingUser->type == 3) {
+                if ($existingUser) {
+                    $client = ClientDetail::where("id", $existingUser->client_id)->get()->first();
 
-            if ($existingUser) {
-                $client = ClientDetail::where("id", $existingUser->client_id)->get()->first();
+                    if ($client->approved == 1) {
+                        $token = $existingUser->createToken("auth_token");
+                        if (Hash::check($request->password, $existingUser->password)) {
+                            return response()->json([
+                                "message" => "Login Successfull",
+                                "status" => 1,
+                                "token" => $token->plainTextToken,
+                                "type" => $existingUser->type
+                            ]);
+                        } else {
+                            return response()->json([
+                                "message" => "Incorrect password",
+                                "status" => 0
+                            ]);
 
-                if ($client->approved == 1) {
+                        }
+
+                    } else {
+                        return response()->json([
+                            "message" => "Account Disabled contact Administrator",
+                            "status" => 0
+                        ]);
+
+                    }
+
+                } else {
                     $token = $existingUser->createToken("auth_token");
                     if (Hash::check($request->password, $existingUser->password)) {
                         return response()->json([
@@ -40,13 +65,6 @@ class UserController extends Controller
                         ]);
 
                     }
-
-                } else {
-                    return response()->json([
-                        "message" => "Account Disabled contact Administrator",
-                        "status" => 0
-                    ]);
-
                 }
 
 
