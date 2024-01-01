@@ -24,7 +24,7 @@ class UserController extends Controller
             if ($existingUser) {
                 $client = ClientDetail::where("id", $existingUser->client_id)->get()->first();
 
-                if ($client->approved = 1) {
+                if ($client->approved == 1) {
                     $token = $existingUser->createToken("auth_token");
                     if (Hash::check($request->password, $existingUser->password)) {
                         return response()->json([
