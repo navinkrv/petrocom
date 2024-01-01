@@ -39,7 +39,7 @@ Route::post("/client/createClient", [ClientDetailController::class, "createClien
 Route::get("/client/getClientListAdmin/{pgno}", [ClientDetailController::class, "getClientListAdmin"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
 Route::post("/client/createClientAccount", [ClientDetailController::class, "createClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::get("/client/getClientDetailsById/{id}", [ClientDetailController::class, "getClientDetailsById"])->middleware("auth:sanctum")->middleware(Admins::class);
-Route::post("/client/createClientAccount", [ClientDetailController::class, "createClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
+Route::post("/client/createClientAccount", [ClientDetailController::class, "createClientAccount"])->middleware("auth:sanctum")->middleware(SAdmin::class);
 Route::post("/client/listClientAccount/{id}", [ClientDetailController::class, "listClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::post("/client/updateClientAccount", [ClientDetailController::class, "updateClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::get("/client/deleteClient/{id}", [ClientDetailController::class, "deleteClient"])->middleware("auth:sanctum")->middleware(SAdmin::class);
@@ -47,5 +47,5 @@ Route::get("/client/deleteClient/{id}", [ClientDetailController::class, "deleteC
 
 // Jobs
 
-Route::post("/job/create", [JobController::class, "createJob"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
+Route::post("/job/create", [JobController::class, "createJob"]);
 Route::get("/job/getJobListAdmin", [JobController::class, "getJobListAdmin"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
