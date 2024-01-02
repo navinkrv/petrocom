@@ -20,11 +20,11 @@ return new class extends Migration {
             $table->json("job_location_data");
             $table->string("vehicle");
             $table->string("status");
-            $table->string("pod");
+            $table->string("pod")->nullable();
             $table->string("invoice_status");
-            $table->json("invoice");
-            $table->string("eta");
-            $table->json("update");
+            $table->json("invoice")->nullable();
+            $table->string("eta")->nullable();
+            $table->json("update")->nullable();
         });
     }
 

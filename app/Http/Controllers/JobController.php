@@ -21,8 +21,6 @@ class JobController extends Controller
             "vehicle" => "required",
             "status" => "required",
             "invoice_status" => "required",
-            "eta" => "required",
-            "update" => "required",
         ]);
 
 
@@ -50,37 +48,37 @@ class JobController extends Controller
             $job->job_location_data = $request->job_location_data;
             $job->vehicle = $request->vehicle;
             $job->status = $request->status;
-            $job->pod = $pod_access_location;
             $job->invoice_status = $request->invoice_status;
-            $job->invoice = $invoice_access_location;
             $job->eta = $request->eta;
             $job->update = $request->update;
 
-            if ($request->file("pod")->getMimeType() == "application/pdf") {
+
+            if ($pod && $request->file("pod")->getMimeType() == "application/pdf") {
                 $request->file("pod")->storePubliclyAs($pod_upload_location, $pod_filename);
-
-                if ($request->file("invoice")->getMimeType() == "application/pdf") {
-                    $request->file("invoice")->storePubliclyAs($invoice_upload_location, $invoice_filename);
-
-                    $job->save();
-                    return response()->json([
-                        "message" => "Saved Successfully"
-                    ]);
-                } else {
-                    return response()->json([
-                        "message" => "Invoice is not a pdf"
-                    ]);
-
-                }
+                $job->pod = $pod_access_location;
             } else {
                 return response()->json([
                     "message" => "POD is not a pdf"
                 ]);
-
             }
+
+            if ($invoice && $request->file("invoice")->getMimeType() == "application/pdf") {
+                $request->file("invoice")->storePubliclyAs($invoice_upload_location, $invoice_filename);
+                $job->invoice = $invoice_access_location;
+
+            } else {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "Invoice is not a pdf"
+                ]);
+            }
+
+            $job->save();
+            return response()->json([
+                "status" => 1,
+                "message" => "Created Successfully"
+            ]);
         }
-
-
     }
 
 
