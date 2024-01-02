@@ -48,4 +48,4 @@ Route::get("/client/deleteClient/{id}", [ClientDetailController::class, "deleteC
 // Jobs
 
 Route::post("/job/create", [JobController::class, "createJob"]);
-Route::get("/job/getJobListByIDAdmin/{id}", [JobController::class, "getJobListByIDAdmin"])->middleware("auth:sanctum");
+Route::get("/job/getJobListByID/{id}", [JobController::class, "getJobListByID"])->middleware("auth:sanctum");
