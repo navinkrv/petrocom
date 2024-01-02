@@ -45,12 +45,12 @@ class JobController extends Controller
             $job->job_id = $request->job_id;
             $job->date = $request->date;
             $job->multidrop = $request->multidrop;
-            $job->job_location_data = $request->job_location_data;
+            $job->job_location_data = (string) $request->job_location_data;
             $job->vehicle = $request->vehicle;
             $job->status = $request->status;
             $job->invoice_status = $request->invoice_status;
             $job->eta = $request->eta;
-            $job->update = $request->update;
+            $job->update = (string) $request->update;
 
             if ($pod) {
                 if ($request->file("pod")->getMimeType() == "application/pdf") {
@@ -109,6 +109,80 @@ class JobController extends Controller
 
     public function updateJob(Request $request)
     {
+        $validation = $request->validate([
+            "job_id" => "required",
+            "date" => "required",
+            "multidrop" => "required",
+            "job_location_data" => "required",
+            "vehicle" => "required",
+            "status" => "required",
+            "invoice_status" => "required",
+        ]);
 
+
+        if ($validation) {
+
+            $job = Job::where("job_id", $request->job_id)->get()->first();
+            if ($job) {
+
+                // file upload handling
+                $pod = $request->file("pod");
+                $invoice = $request->file("invoice");
+
+                $pod_filename = "pod_" . $request->job_id . "_" . $request->date . ".pdf";
+                $pod_upload_location = "public/pod";
+                $pod_access_location = env("UPLOAD_LOCATION") . "pod/" . $pod_filename;
+
+
+                $invoice_filename = "invoice_" . $request->client_id . "_" . $request->date . ".pdf";
+                $invoice_upload_location = "public/invoice";
+                $invoice_access_location = env("UPLOAD_LOCATION") . "invoice/" . $invoice_filename;
+
+                $job->date = $request->date;
+                $job->multidrop = $request->multidrop;
+                $job->job_location_data = (string) $request->job_location_data;
+                $job->vehicle = $request->vehicle;
+                $job->status = $request->status;
+                $job->invoice_status = $request->invoice_status;
+                $job->eta = $request->eta;
+                $job->update = (string) $request->update;
+
+                if ($pod) {
+                    if ($request->file("pod")->getMimeType() == "application/pdf") {
+                        $request->file("pod")->storePubliclyAs($pod_upload_location, $pod_filename);
+                        $job->pod = $pod_access_location;
+                    } else {
+                        return response()->json([
+                            "message" => "POD is not a pdf",
+                            "status" => 0
+                        ]);
+                    }
+                }
+                if ($invoice) {
+                    if ($request->file("invoice")->getMimeType() == "application/pdf") {
+                        $request->file("invoice")->storePubliclyAs($invoice_upload_location, $invoice_filename);
+                        $job->invoice = $invoice_access_location;
+
+                    } else {
+                        return response()->json([
+                            "status" => 0,
+                            "message" => "Invoice is not a pdf"
+                        ]);
+                    }
+                }
+
+                $job->save();
+                return response()->json([
+                    "status" => 1,
+                    "message" => "Updated Successfully"
+                ]);
+            } else {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "Job not found with provided job ID"
+                ]);
+
+            }
+        }
     }
 }
