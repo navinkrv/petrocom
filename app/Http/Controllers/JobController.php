@@ -52,25 +52,28 @@ class JobController extends Controller
             $job->eta = $request->eta;
             $job->update = $request->update;
 
-
-            if ($pod && $request->file("pod")->getMimeType() == "application/pdf") {
-                $request->file("pod")->storePubliclyAs($pod_upload_location, $pod_filename);
-                $job->pod = $pod_access_location;
-            } else {
-                return response()->json([
-                    "message" => "POD is not a pdf"
-                ]);
+            if ($pod) {
+                if ($request->file("pod")->getMimeType() == "application/pdf") {
+                    $request->file("pod")->storePubliclyAs($pod_upload_location, $pod_filename);
+                    $job->pod = $pod_access_location;
+                } else {
+                    return response()->json([
+                        "message" => "POD is not a pdf",
+                        "status" => 0
+                    ]);
+                }
             }
+            if ($invoice) {
+                if ($request->file("invoice")->getMimeType() == "application/pdf") {
+                    $request->file("invoice")->storePubliclyAs($invoice_upload_location, $invoice_filename);
+                    $job->invoice = $invoice_access_location;
 
-            if ($invoice && $request->file("invoice")->getMimeType() == "application/pdf") {
-                $request->file("invoice")->storePubliclyAs($invoice_upload_location, $invoice_filename);
-                $job->invoice = $invoice_access_location;
-
-            } else {
-                return response()->json([
-                    "status" => 0,
-                    "message" => "Invoice is not a pdf"
-                ]);
+                } else {
+                    return response()->json([
+                        "status" => 0,
+                        "message" => "Invoice is not a pdf"
+                    ]);
+                }
             }
 
             $job->save();
@@ -101,6 +104,11 @@ class JobController extends Controller
             ]);
 
         }
+
+    }
+
+    public function updateJob(Request $request)
+    {
 
     }
 }
