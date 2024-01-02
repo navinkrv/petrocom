@@ -136,6 +136,14 @@ class ClientDetailController extends Controller
         ]);
 
         if ($validation) {
+            $existingUser = User::where("email", $request->email)->get()->first();
+
+            if ($existingUser) {
+                return response()->json([
+                    "message" => "Account already Exists",
+                    "status" => 0
+                ]);
+            }
             $user = new User();
             $user->client_id = $request->client_id;
             $user->email = $request->email;
