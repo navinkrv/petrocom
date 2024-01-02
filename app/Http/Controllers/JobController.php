@@ -185,4 +185,23 @@ class JobController extends Controller
             }
         }
     }
+    public function getJobByStatus(Request $request, string $status)
+    {
+        $jobs = Job::where("status", $status)->get()->getIterator()->getArrayCopy();
+
+        if (count($jobs) < 1) {
+            return response()->json([
+                "status" => 0,
+                "message" => "No data available"
+            ]);
+
+        } else {
+            return response()->json([
+                "status" => 1,
+                "message" => "success",
+                "data" => $jobs
+            ]);
+
+        }
+    }
 }

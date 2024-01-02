@@ -50,3 +50,4 @@ Route::get("/client/deleteClient/{id}", [ClientDetailController::class, "deleteC
 Route::post("/job/create", [JobController::class, "createJob"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::post("/job/update", [JobController::class, "updateJob"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::get("/job/getJobListByID/{id}", [JobController::class, "getJobListByID"])->middleware("auth:sanctum");
+Route::get("/job/getJobByStatus/{status}", [JobController::class, "getJobByStatus"])->middleware("auth:sanctum");
