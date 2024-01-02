@@ -82,7 +82,7 @@ class JobController extends Controller
     }
 
 
-    public function getJobListByIDAdmin(Request $request, string $id)
+    public function getJobListByID(Request $request, string $id)
     {
 
         $jobList = Job::where("client_id", $id)->get()->getIterator()->getArrayCopy();
