@@ -31,7 +31,8 @@ class UserController extends Controller
                                 "message" => "Login Successfull",
                                 "status" => 1,
                                 "token" => $token->plainTextToken,
-                                "type" => $existingUser->type
+                                "type" => $existingUser->type,
+                                "client_data" => $client
                             ]);
                         } else {
                             return response()->json([
