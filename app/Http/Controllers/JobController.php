@@ -107,6 +107,24 @@ class JobController extends Controller
 
     }
 
+    public function getJobListDashboard(Request $request)
+    {
+        $job = Job::select("*")->limit(3)->get();
+        if (count($job) < 1) {
+            return response()->json([
+                "message" => "Success",
+                "status" => 1,
+                "data" => $job
+            ]);
+        } else {
+            return response()->json([
+                "message" => "Data not Available",
+                "status" => 0
+            ]);
+
+        }
+    }
+
     public function updateJob(Request $request)
     {
         $validation = $request->validate([

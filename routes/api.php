@@ -52,3 +52,4 @@ Route::post("/job/update", [JobController::class, "updateJob"])->middleware("aut
 Route::get("/job/getJobListByID/{id}", [JobController::class, "getJobListByID"])->middleware("auth:sanctum");
 Route::get("/job/getJobByStatus/{status}", [JobController::class, "getJobByStatus"])->middleware("auth:sanctum");
 Route::get("/job/getJobById/{job_id}", [JobController::class, "getJobById"])->middleware("auth:sanctum");
+Route::get("/job/getJobListDashboard", [JobController::class, "getJobListDashboard"])->middleware("auth:sanctum")->middleware(Admins::class);
