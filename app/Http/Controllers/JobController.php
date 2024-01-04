@@ -110,7 +110,7 @@ class JobController extends Controller
     public function getJobListDashboard(Request $request)
     {
         $job = Job::select("*")->limit(3)->get()->getIterator()->getArrayCopy();
-        if (count($job) < 1) {
+        if (count($job) > 1) {
             return response()->json([
                 "message" => "Success",
                 "status" => 1,
