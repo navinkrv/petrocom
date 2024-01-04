@@ -119,7 +119,7 @@ class JobController extends Controller
         } else {
             return response()->json([
                 "message" => "Data not Available",
-                "status" => 0
+                "status" => 0,
             ]);
 
         }

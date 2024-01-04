@@ -36,6 +36,7 @@ Route::get("/user/listAdminAccount", [UserController::class, "listAdminAccount"]
 
 //client
 Route::post("/client/createClient", [ClientDetailController::class, "createClient"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
+Route::post("/client/updateClientData", [ClientDetailController::class, "updateClientData"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::get("/client/getClientListAdmin/{pgno}", [ClientDetailController::class, "getClientListAdmin"])->middleware("auth:sanctum")->middleware(userTypeAuth::class);
 Route::post("/client/createClientAccount", [ClientDetailController::class, "createClientAccount"])->middleware("auth:sanctum")->middleware(Admins::class);
 Route::get("/client/getClientDetailsById/{id}", [ClientDetailController::class, "getClientDetailsById"])->middleware("auth:sanctum")->middleware(Admins::class);

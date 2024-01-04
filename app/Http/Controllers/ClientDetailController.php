@@ -66,6 +66,45 @@ class ClientDetailController extends Controller
 
         }
     }
+    public function updateClientData(Request $request)
+    {
+        //photo upload
+        $photo = $request->file("photo");
+        $photo_name = $request->client_name . " " . $request->company_name . ".jpg";
+        $photo_upload_location = "public/client_photo";
+        $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
+
+        $client = ClientDetail::where("id", $request->client_id)->get()->first();
+        if ($photo) {
+
+            if ($photo->getMimeType() == "image/jpeg") {
+                $photo->storePubliclyAs($photo_upload_location, $photo_name);
+                $client->photo = $photo_access_location;
+            } else {
+                return response()->json([
+                    "message" => "Image must be JPEG",
+                    "status" => 0
+                ]);
+            }
+        }
+
+
+        $client->client_name = $request->client_name;
+        $client->company_name = $request->company_name;
+        $client->primary_email = $request->primary_email;
+        $client->sec_email = $request->sec_email;
+        $client->phone = $request->phone;
+        $client->sec_phone = $request->sec_phone;
+
+        $client->save();
+
+        return response()->json([
+            "message" => "Updated Successfully",
+            "status" => 1
+
+        ]);
+
+    }
 
     public function getClientListAdmin(Request $request, string $pgno)
     {
