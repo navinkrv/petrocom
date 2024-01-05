@@ -45,7 +45,7 @@ class JobController extends Controller
             $job->job_id = $request->job_id;
             $job->date = $request->date;
             $job->multidrop = $request->multidrop;
-            $job->job_location_data = json_decode($request->job_location_data);
+            $job->job_location_data = (string) $request->job_location_data;
             $job->vehicle = $request->vehicle;
             $job->status = $request->status;
             $job->invoice_status = $request->invoice_status;
