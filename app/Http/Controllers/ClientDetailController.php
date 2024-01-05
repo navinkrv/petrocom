@@ -74,7 +74,7 @@ class ClientDetailController extends Controller
         $photo_upload_location = "public/client_photo";
         $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
 
-        $client = ClientDetail::where("id", $request->client_id)->get()->first();
+        $client = ClientDetail::find($request->client_id);
         if ($photo) {
 
             if ($photo->getMimeType() == "image/jpeg") {
