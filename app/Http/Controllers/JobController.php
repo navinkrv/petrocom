@@ -109,12 +109,17 @@ class JobController extends Controller
 
     public function getJobListDashboard(Request $request)
     {
-        $job = Job::select("*")->orderBy("id", "desc")->limit(3)->get()->getIterator()->getArrayCopy();
+        $job = Job::with("client:id,approved")->select("*")->orderBy("id", "desc")->limit(3)->get()->getIterator()->getArrayCopy();
         if (count($job) > 1) {
+            $new_job_array = array_filter($job, function ($data) {
+                if ($data->client->approved != 0) {
+                    return $data;
+                }
+            });
             return response()->json([
                 "message" => "Success",
                 "status" => 1,
-                "data" => $job
+                "data" => $new_job_array
             ]);
         } else {
             return response()->json([
