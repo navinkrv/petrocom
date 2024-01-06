@@ -109,7 +109,9 @@ class JobController extends Controller
 
     public function getJobListDashboard(Request $request)
     {
-        $job = Job::with("client:id,approved")->select("*")->orderBy("id", "desc")->limit(3)->get()->getIterator()->getArrayCopy();
+        // $job = Job::with("client:id,approved")->select("*")->orderBy("id", "desc")->limit(3)->get()->getIterator()->getArrayCopy();
+        $job = Job::with("client:id,approved")->select("*")->latest()->take(10)->get()->getIterator()->getArrayCopy();
+
         if (count($job) > 1) {
             $new_job_array = array_filter($job, function ($data) {
                 if ($data->client->approved != 0) {
@@ -119,7 +121,7 @@ class JobController extends Controller
             return response()->json([
                 "message" => "Success",
                 "status" => 1,
-                "data" => $new_job_array
+                "data" => array_slice($new_job_array, 0, 3)
             ]);
         } else {
             return response()->json([
@@ -163,12 +165,12 @@ class JobController extends Controller
 
                 $job->date = $request->date;
                 $job->multidrop = $request->multidrop;
-                $job->job_location_data = (string) $request->job_location_data;
+                $job->job_location_data = $request->job_location_data;
                 $job->vehicle = $request->vehicle;
                 $job->status = $request->status;
                 $job->invoice_status = $request->invoice_status;
                 $job->eta = $request->eta;
-                $job->update = (string) $request->update;
+                $job->update = $request->update;
 
                 if ($pod) {
                     if ($request->file("pod")->getMimeType() == "application/pdf") {
@@ -228,7 +230,7 @@ class JobController extends Controller
     }
     public function getJobByStatus(Request $request, string $status)
     {
-        $jobs = Job::where("status", $status)->get()->getIterator()->getArrayCopy();
+        $jobs = Job::with("client:id,approved")->where("status", $status)->get()->getIterator()->getArrayCopy();
 
         if (count($jobs) < 1) {
             return response()->json([
@@ -237,12 +239,68 @@ class JobController extends Controller
             ]);
 
         } else {
+            $new_job_array = array_filter($jobs, function ($data) {
+                if ($data->client->approved != 0) {
+                    return $data;
+                }
+            });
             return response()->json([
                 "status" => 1,
                 "message" => "success",
-                "data" => $jobs
+                "data" => $new_job_array
             ]);
 
         }
+    }
+    public function getJobByDateRange(Request $request)
+    {
+        $jobs = Job::with("client:id,approved")->where("client_id", $request->client_id)->get()->getIterator()->getArrayCopy();
+        $fromDate = $request->from;
+        $toDate = $request->to;
+        // $fromDate = str_replace(" (India Standard Time)", "", $request->from);
+        // $toDate = str_replace(" (India Standard Time)", "", $request->to);
+
+        if (count($jobs) > 0) {
+
+            $new_job_array = array_filter($jobs, function ($data) {
+                if ($data->client->approved != 0) {
+                    return $data;
+                }
+            });
+            $final_job_arr = array_filter($new_job_array, function ($data) use ($fromDate, $toDate) {
+
+                if (date_create($data->date) >= date_create($fromDate) && date_create($data->date) <= date_create($toDate)) {
+                    return $data;
+                }
+            });
+
+
+            if (count($final_job_arr) > 0) {
+                return response()->json([
+                    "status" => 1,
+                    "message" => "success",
+                    "data" => $final_job_arr
+                ]);
+
+            } else {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "No matching data found",
+                    "from" => date_create($fromDate),
+                    "to" => date_create($toDate),
+                    "comp" => date_diff(date_create($fromDate), date_create($toDate))
+
+                ]);
+
+
+            }
+        } else {
+            return response()->json([
+                "status" => 0,
+                "message" => "No Data Available"
+            ]);
+
+        }
+
     }
 }
