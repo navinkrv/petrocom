@@ -231,6 +231,7 @@ class JobController extends Controller
     public function getJobByStatus(Request $request, string $status)
     {
         $jobs = Job::with("client:id,approved")->where("status", $status)->get()->getIterator()->getArrayCopy();
+        $new_job_array = array();
 
         if (count($jobs) < 1) {
             return response()->json([
@@ -239,9 +240,12 @@ class JobController extends Controller
             ]);
 
         } else {
-            $new_job_array = array_filter($jobs, function ($data) {
+            array_filter($jobs, function ($data) use (&$new_job_array) {
                 if ($data->client->approved != 0) {
-                    return $data;
+                    // echo $data;
+                    // array_push($new_job_array, $data);
+                    $new_job_array[] = $data;
+                    // return $data;
                 }
             });
             return response()->json([
@@ -267,10 +271,12 @@ class JobController extends Controller
                     return $data;
                 }
             });
-            $final_job_arr = array_filter($new_job_array, function ($data) use ($fromDate, $toDate) {
+            $final_job_arr = [];
+            array_filter($new_job_array, function ($data) use ($fromDate, $toDate, &$final_job_arr) {
 
                 if (date_create($data->date) >= date_create($fromDate) && date_create($data->date) <= date_create($toDate)) {
-                    return $data;
+                    // return $data;
+                    $final_job_arr[] = $data;
                 }
             });
 
