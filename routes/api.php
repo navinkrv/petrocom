@@ -55,5 +55,7 @@ Route::post("/job/getJobByDateRangeForAll", [JobController::class, "getJobByDate
 Route::get("/job/getJobListByID/{id}", [JobController::class, "getJobListByID"])->middleware("auth:sanctum");
 Route::get("/job/getJobByStatus/{status}", [JobController::class, "getJobByStatus"])->middleware("auth:sanctum");
 Route::get("/job/getJobByStatusByClient/{client_id}/{status}", [JobController::class, "getJobByStatusByClient"])->middleware("auth:sanctum");
+Route::get("/job/getJobByInvoiceStatusByClient/{client_id}/{invoice_status}", [JobController::class, "getJobByInvoiceStatusByClient"])->middleware("auth:sanctum");
+Route::get("/job/getJobByInvoiceStatusAll/{invoice_status}", [JobController::class, "getJobByInvoiceStatusAll"])->middleware("auth:sanctum");
 Route::get("/job/getJobById/{job_id}", [JobController::class, "getJobById"])->middleware("auth:sanctum");
 Route::get("/job/getJobListDashboard", [JobController::class, "getJobListDashboard"])->middleware("auth:sanctum")->middleware(Admins::class);
