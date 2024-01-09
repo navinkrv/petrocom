@@ -77,15 +77,10 @@ class ClientDetailController extends Controller
         $client = ClientDetail::find($request->client_id);
         if ($photo) {
 
-            if ($photo->getMimeType() == "image/jpeg") {
-                $photo->storePubliclyAs($photo_upload_location, $photo_name);
-                $client->photo = $photo_access_location;
-            } else {
-                return response()->json([
-                    "message" => "Image must be JPEG",
-                    "status" => 0
-                ]);
-            }
+
+            $photo->storePubliclyAs($photo_upload_location, $photo_name);
+            $client->photo = $photo_access_location;
+
         }
 
 
