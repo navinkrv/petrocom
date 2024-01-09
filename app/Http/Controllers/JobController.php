@@ -88,7 +88,7 @@ class JobController extends Controller
     public function getJobListByID(Request $request, string $id)
     {
 
-        $jobList = Job::with("client")->where("client_id", $id)->get()->getIterator()->getArrayCopy();
+        $jobList = Job::with("client:id,client_name")->where("client_id", $id)->get()->getIterator()->getArrayCopy();
         if (count($jobList) > 0) {
 
             return response()->json([
@@ -110,7 +110,7 @@ class JobController extends Controller
     public function getJobListDashboard(Request $request)
     {
         // $job = Job::with("client:id,approved")->select("*")->orderBy("id", "desc")->limit(3)->get()->getIterator()->getArrayCopy();
-        $job = Job::with("client:id,approved")->select("*")->latest()->take(10)->get()->getIterator()->getArrayCopy();
+        $job = Job::with("client:id,client_name,approved")->select("*")->latest()->take(10)->get()->getIterator()->getArrayCopy();
 
         if (count($job) > 1) {
             $new_job_array = array_filter($job, function ($data) {
