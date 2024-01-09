@@ -228,34 +228,7 @@ class JobController extends Controller
 
         }
     }
-    public function getJobByStatus(Request $request, string $status)
-    {
-        $jobs = Job::with("client:id,approved")->where("status", $status)->get()->getIterator()->getArrayCopy();
-        $new_job_array = array();
 
-        if (count($jobs) < 1) {
-            return response()->json([
-                "status" => 0,
-                "message" => "No data available"
-            ]);
-
-        } else {
-            array_filter($jobs, function ($data) use (&$new_job_array) {
-                if ($data->client->approved != 0) {
-                    // echo $data;
-                    // array_push($new_job_array, $data);
-                    $new_job_array[] = $data;
-                    // return $data;
-                }
-            });
-            return response()->json([
-                "status" => 1,
-                "message" => "success",
-                "data" => $new_job_array
-            ]);
-
-        }
-    }
     public function getJobByDateRangeByClient(Request $request)
     {
         $jobs = Job::with("client:id,approved")->where("client_id", $request->client_id)->get()->getIterator()->getArrayCopy();
@@ -362,6 +335,35 @@ class JobController extends Controller
 
         }
 
+    }
+
+    public function getJobByStatus(Request $request, string $status)
+    {
+        $jobs = Job::with("client:id,approved")->whereRaw("status='$status' or invoice_status='$status'")->get()->getIterator()->getArrayCopy();
+        $new_job_array = array();
+
+        if (count($jobs) < 1) {
+            return response()->json([
+                "status" => 0,
+                "message" => "No data available"
+            ]);
+
+        } else {
+            array_filter($jobs, function ($data) use (&$new_job_array) {
+                if ($data->client->approved != 0) {
+                    // echo $data;
+                    // array_push($new_job_array, $data);
+                    $new_job_array[] = $data;
+                    // return $data;
+                }
+            });
+            return response()->json([
+                "status" => 1,
+                "message" => "success",
+                "data" => $new_job_array
+            ]);
+
+        }
     }
     public function getJobByStatusByClient(Request $request, string $client_id, string $status)
     {
