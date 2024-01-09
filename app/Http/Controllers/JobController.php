@@ -367,6 +367,11 @@ class JobController extends Controller
     }
     public function getJobByStatusByClient(Request $request, string $client_id, string $status)
     {
+        $jobs = array();
+        if ($status == "paid" || $status == "due") {
+
+            $jobs = Job::with("client:id,approved")->whereRaw("invoice_status='$status' and client_id = '$client_id'")->get()->getIterator()->getArrayCopy();
+        }
         $jobs = Job::with("client:id,approved")->whereRaw("status='$status' and client_id = '$client_id'")->get()->getIterator()->getArrayCopy();
         $new_job_array = array();
 
