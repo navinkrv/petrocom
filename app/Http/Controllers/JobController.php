@@ -256,9 +256,63 @@ class JobController extends Controller
 
         }
     }
-    public function getJobByDateRange(Request $request)
+    public function getJobByDateRangeByClient(Request $request)
     {
         $jobs = Job::with("client:id,approved")->where("client_id", $request->client_id)->get()->getIterator()->getArrayCopy();
+        $fromDate = $request->from;
+        $toDate = $request->to;
+        // $fromDate = str_replace(" (India Standard Time)", "", $request->from);
+        // $toDate = str_replace(" (India Standard Time)", "", $request->to);
+
+        if (count($jobs) > 0) {
+
+            $new_job_array = array_filter($jobs, function ($data) {
+                if ($data->client->approved != 0) {
+                    return $data;
+                }
+            });
+            $final_job_arr = [];
+            array_filter($new_job_array, function ($data) use ($fromDate, $toDate, &$final_job_arr) {
+
+                if (date_create($data->date) >= date_create($fromDate) && date_create($data->date) <= date_create($toDate)) {
+                    // return $data;
+                    $final_job_arr[] = $data;
+                }
+            });
+
+
+            if (count($final_job_arr) > 0) {
+                return response()->json([
+                    "status" => 1,
+                    "message" => "success",
+                    "data" => $final_job_arr
+                ]);
+
+            } else {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "No matching data found",
+                    "from" => date_create($fromDate),
+                    "to" => date_create($toDate),
+                    "comp" => date_diff(date_create($fromDate), date_create($toDate))
+
+                ]);
+
+
+            }
+        } else {
+            return response()->json([
+                "status" => 0,
+                "message" => "No Data Available"
+            ]);
+
+        }
+
+    }
+
+    public function getJobByDateRangeForAll(Request $request)
+    {
+        $jobs = Job::with("client:id,approved")->get()->getIterator()->getArrayCopy();
         $fromDate = $request->from;
         $toDate = $request->to;
         // $fromDate = str_replace(" (India Standard Time)", "", $request->from);
