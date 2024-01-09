@@ -367,8 +367,7 @@ class JobController extends Controller
     }
     public function getJobByStatusByClient(Request $request, string $client_id, string $status)
     {
-        echo $client_id;
-        echo $status;
+
         $jobs = array();
         if ($status == "paid" || $status == "due") {
 
