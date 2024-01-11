@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClientDetailController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\MailController;
 use App\Http\Middleware\Admins;
 use App\Http\Middleware\SAdmin;
 use App\Http\Middleware\userTypeAuth;
@@ -59,3 +60,8 @@ Route::get("/job/getJobByInvoiceStatusByClient/{client_id}/{invoice_status}", [J
 Route::get("/job/getJobByInvoiceStatusAll/{invoice_status}", [JobController::class, "getJobByInvoiceStatusAll"])->middleware("auth:sanctum");
 Route::get("/job/getJobById/{job_id}", [JobController::class, "getJobById"]);
 Route::get("/job/getJobListDashboard", [JobController::class, "getJobListDashboard"])->middleware("auth:sanctum")->middleware(Admins::class);
+
+
+//mailer
+
+Route::post("/mailer/sendLoad", [MailController::class, "sendLoad"]);
