@@ -25,9 +25,15 @@ class JobController extends Controller
 
 
         if ($validation) {
+            $existingJob = Job::where("job_id", $request->job_id)->get()->first();
+            if ($existingJob) {
+                return response()->json([
+                    "message" => "Job ID already Exists",
+                    "status" => 0
+                ]);
+            }
 
             $job = new Job();
-
             // file upload handling
             $pod = $request->file("pod");
             $invoice = $request->file("invoice");
@@ -161,16 +167,18 @@ class JobController extends Controller
 
                 // file upload handling
                 $pod = $request->file("pod");
+                if ($pod) {
+                    $pod_filename = "pod_" . $request->job_id . "_" . $request->date . ".pdf";
+                    $pod_upload_location = "public/pod";
+                    $pod_access_location = env("UPLOAD_LOCATION") . "pod/" . $pod_filename;
+
+                }
                 $invoice = $request->file("invoice");
-
-                $pod_filename = "pod_" . $request->job_id . "_" . $request->date . ".pdf";
-                $pod_upload_location = "public/pod";
-                $pod_access_location = env("UPLOAD_LOCATION") . "pod/" . $pod_filename;
-
-
-                $invoice_filename = "invoice_" . $request->client_id . "_" . $request->date . ".pdf";
-                $invoice_upload_location = "public/invoice";
-                $invoice_access_location = env("UPLOAD_LOCATION") . "invoice/" . $invoice_filename;
+                if ($invoice) {
+                    $invoice_filename = "invoice_" . $request->client_id . "_" . $request->date . ".pdf";
+                    $invoice_upload_location = "public/invoice";
+                    $invoice_access_location = env("UPLOAD_LOCATION") . "invoice/" . $invoice_filename;
+                }
 
                 $job->date = $request->date;
                 $job->multidrop = $request->multidrop;

@@ -11,20 +11,15 @@ class MailController extends Controller
 {
     public function sendLoad(Request $request)
     {
-        // $validation = $request->validate([
-        //     "name" => "required",
-        //     "email" => "required",
-        //     "phone" => "required",
-        //     "frieght_type" => "type",
-        //     "destination" => "required",
-        //     "multidrop" => "required",
-        //     "length" => "required",
-        //     "breadth" => "required",
-        //     "height" => "required",
-        //     "weight" => "required",
-        //     "message" => "required"
-        // ]);
-        $validation = true;
+        $validation = $request->validate([
+            "name" => "required",
+            "email" => "required",
+            "frieght_type" => "required",
+            "pickup_location" => "required",
+            "destination" => "required",
+            "multidrop" => "required",
+            "message" => "required"
+        ]);
 
 
         if ($validation) {
