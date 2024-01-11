@@ -25,38 +25,31 @@ class ClientDetailController extends Controller
 
                 //photo upload
                 $photo = $request->file("photo");
-                $photo_name = $request->client_name . " " . $request->company_name . ".jpg";
+                $photo_name = $request->client_name . " " . $request->company_name . $photo->getClientOriginalExtension();
                 $photo_upload_location = "public/client_photo";
                 $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
 
-                if ($photo->getMimeType() == "image/jpeg") {
-                    $photo->storePubliclyAs($photo_upload_location, $photo_name);
 
-                    $client = new ClientDetail();
+                $photo->storePubliclyAs($photo_upload_location, $photo_name);
 
-                    $client->client_name = $request->client_name;
-                    $client->company_name = $request->company_name;
-                    $client->primary_email = $request->primary_email;
-                    $client->sec_email = $request->sec_email;
-                    $client->phone = $request->phone;
-                    $client->sec_phone = $request->sec_phone;
-                    $client->photo = $photo_access_location;
-                    $client->approved = 1;
-                    $client->save();
+                $client = new ClientDetail();
 
-                    return response()->json([
-                        "message" => "Saved Successfully",
-                        "status" => 1
+                $client->client_name = $request->client_name;
+                $client->company_name = $request->company_name;
+                $client->primary_email = $request->primary_email;
+                $client->sec_email = $request->sec_email;
+                $client->phone = $request->phone;
+                $client->sec_phone = $request->sec_phone;
+                $client->photo = $photo_access_location;
+                $client->approved = 1;
+                $client->save();
 
-                    ]);
-                } else {
-                    return response()->json([
-                        "message" => "Image must be JPEG",
-                        "status" => 0
+                return response()->json([
+                    "message" => "Saved Successfully",
+                    "status" => 1
 
-                    ]);
+                ]);
 
-                }
             }
         } else {
             return response()->json([
@@ -70,7 +63,7 @@ class ClientDetailController extends Controller
     {
         //photo upload
         $photo = $request->file("photo");
-        $photo_name = $request->client_name . " " . $request->company_name . ".jpg";
+        $photo_name = $request->client_name . " " . $request->company_name . $photo->getClientOriginalExtension();
         $photo_upload_location = "public/client_photo";
         $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
 
