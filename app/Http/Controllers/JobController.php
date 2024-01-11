@@ -112,17 +112,26 @@ class JobController extends Controller
         // $job = Job::with("client:id,approved")->select("*")->orderBy("id", "desc")->limit(3)->get()->getIterator()->getArrayCopy();
         $job = Job::with("client:id,client_name,approved")->select("*")->latest()->take(10)->get()->getIterator()->getArrayCopy();
 
-        if (count($job) > 1) {
+        if (count($job) > 0) {
             $new_job_array = array_filter($job, function ($data) {
                 if ($data->client->approved != 0) {
                     return $data;
                 }
             });
-            return response()->json([
-                "message" => "Success",
-                "status" => 1,
-                "data" => array_slice($new_job_array, 0, 3)
-            ]);
+            if (count($new_job_array) < 1) {
+                return response()->json([
+                    "message" => "No Data Available",
+                    "status" => 0,
+                ]);
+
+            } else {
+
+                return response()->json([
+                    "message" => "Success",
+                    "status" => 1,
+                    "data" => array_slice($new_job_array, 0, 3)
+                ]);
+            }
         } else {
             return response()->json([
                 "message" => "Data not Available",

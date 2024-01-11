@@ -63,9 +63,12 @@ class ClientDetailController extends Controller
     {
         //photo upload
         $photo = $request->file("photo");
-        $photo_name = $request->client_name . " " . $request->company_name . $photo->getClientOriginalExtension();
-        $photo_upload_location = "public/client_photo";
-        $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
+        if ($photo) {
+
+            $photo_name = $request->client_name . " " . $request->company_name . $photo->getClientOriginalExtension();
+            $photo_upload_location = "public/client_photo";
+            $photo_access_location = env("UPLOAD_LOCATION") . "client_photo/" . $photo_name;
+        }
 
         $client = ClientDetail::find($request->client_id);
         if ($photo) {
