@@ -16,9 +16,9 @@ return new class extends Migration {
             $table->string('client_name');
             $table->string("company_name");
             $table->string("primary_email");
-            $table->string("sec_email");
+            $table->string("sec_email")->nullable();
             $table->string("phone");
-            $table->string("sec_phone");
+            $table->string("sec_phone")->nullable();
             $table->string("photo");
             $table->integer("approved");
         });

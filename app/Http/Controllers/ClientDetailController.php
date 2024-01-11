@@ -17,9 +17,9 @@ class ClientDetailController extends Controller
                 "client_name" => "required",
                 "company_name" => "required",
                 "primary_email" => "required | email",
-                "sec_email" => "required | email",
+
                 "phone" => "required",
-                "sec_phone" => "required"
+
             ]);
             if ($validation) {
 
