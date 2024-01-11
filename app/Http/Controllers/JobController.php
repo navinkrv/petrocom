@@ -264,10 +264,8 @@ class JobController extends Controller
             } else {
                 return response()->json([
                     "status" => 0,
-                    "message" => "No matching data found",
-                    "from" => date_create($fromDate),
-                    "to" => date_create($toDate),
-                    "comp" => date_diff(date_create($fromDate), date_create($toDate))
+                    "message" => "No matching data found for the selected date range",
+
 
                 ]);
 
@@ -318,10 +316,8 @@ class JobController extends Controller
             } else {
                 return response()->json([
                     "status" => 0,
-                    "message" => "No matching data found",
-                    "from" => date_create($fromDate),
-                    "to" => date_create($toDate),
-                    "comp" => date_diff(date_create($fromDate), date_create($toDate))
+                    "message" => "No matching data found for the selected date range",
+
 
                 ]);
 
@@ -357,12 +353,21 @@ class JobController extends Controller
                     // return $data;
                 }
             });
-            return response()->json([
-                "status" => 1,
-                "message" => "success",
-                "data" => $new_job_array
-            ]);
+            if (count($new_job_array) < 1) {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "No data Available for th selected filter",
 
+                ]);
+            } else {
+
+                return response()->json([
+                    "status" => 1,
+                    "message" => "success",
+                    "data" => $new_job_array
+                ]);
+
+            }
         }
     }
     public function getJobByStatusByClient(Request $request, string $client_id, string $status)
@@ -394,14 +399,25 @@ class JobController extends Controller
                     // return $data;
                 }
             });
-            return response()->json([
-                "status" => 1,
-                "message" => "success",
-                "data" => $new_job_array
-            ]);
+            if (count($new_job_array) < 1) {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "No data Available for th selected filter",
+
+                ]);
+
+            } else {
+
+                return response()->json([
+                    "status" => 1,
+                    "message" => "success",
+                    "data" => $new_job_array
+                ]);
+            }
 
         }
     }
+
 
     public function getJobByInvoiceStatusAll(Request $request, string $invoice_status)
     {
@@ -423,12 +439,21 @@ class JobController extends Controller
                     // return $data;
                 }
             });
-            return response()->json([
-                "status" => 1,
-                "message" => "success",
-                "data" => $new_job_array
-            ]);
+            if (count($new_job_array) < 1) {
+                return response()->json([
+                    "status" => 0,
+                    "message" => "No data Available for th selected filter",
 
+                ]);
+            } else {
+
+                return response()->json([
+                    "status" => 1,
+                    "message" => "success",
+                    "data" => $new_job_array
+                ]);
+
+            }
         }
     }
     public function getJobByInvoiceStatusByClient(Request $request, string $client_id, string $invoice_status)
