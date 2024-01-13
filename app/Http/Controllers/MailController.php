@@ -23,7 +23,7 @@ class MailController extends Controller
 
 
         if ($validation) {
-
+            echo $request;
 
             $mailer = new SmtpMailer(
                 host: 'smtp.gmail.com',
@@ -88,7 +88,7 @@ class MailController extends Controller
                 ");
 
             try {
-                $mailer->send($mail);
+                // $mailer->send($mail);
                 return response()->json([
                     "message" => "Sent Successfully",
                     "status" => 1
