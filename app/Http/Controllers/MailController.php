@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SendMail;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Nette\Mail\SmtpMailer;
 use Nette\Mail\Message;
 
@@ -23,19 +25,9 @@ class MailController extends Controller
 
 
         if ($validation) {
-            echo $request;
+            // echo $request;
 
-            $mailer = new SmtpMailer(
-                host: 'smtp.gmail.com',
-                username: 'pran4476@gmail.com',
-                password: 'zdsiywtvmrohapvg',
-                encryption: SmtpMailer::EncryptionSSL,
-            );
-            $mail = new Message();
-            $mail->setFrom('pran4476@gmail.com')
-                ->addTo('navinkrv@gmail.com')
-                ->setSubject('Load Request')
-                ->setHtmlBody("
+            $message = "
                 <table>
 <tbody>
 <tr>
@@ -85,9 +77,31 @@ class MailController extends Controller
 </tbody>
 </table>
 <!-- DivTable.com -->
-                ");
+                ";
+
+            // $mailer = new SmtpMailer(
+            //     host: 'smtp.gmail.com',
+            //     username: 'pran4476@gmail.com',
+            //     password: 'zdsiywtvmrohapvg',
+            //     encryption: SmtpMailer::EncryptionSSL,
+            // );
+            // $mail = new Message();
+            // $mail->setFrom('pran4476@gmail.com')
+            //     ->addTo('navinkrv@gmail.com')
+            //     ->setSubject('Load Request')
+            //     ->setHtmlBody("");
+
+            $to_name = "Test";
+            $to_email = "navinkrv@gmail.com";
+            $testMailData = [
+                'title' => 'Load Request',
+                'body' => $message
+            ];
 
             try {
+                Mail::to('navinkrv@gmail.com')->send(new SendMail($testMailData));
+
+                // dd('Success! Email has been sent successfully.');
                 // $mailer->send($mail);
                 return response()->json([
                     "message" => "Sent Successfully",
