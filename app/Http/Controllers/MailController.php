@@ -95,7 +95,7 @@ class MailController extends Controller
             $to_email = "navinkrv@gmail.com";
             $testMailData = [
                 'title' => 'Load Request',
-                'body' => $message
+                'body' => $request
             ];
 
             try {
