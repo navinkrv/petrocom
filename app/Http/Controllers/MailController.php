@@ -99,7 +99,7 @@ class MailController extends Controller
             ];
 
             try {
-                Mail::to('navinkrv@gmail.com')->send(new SendMail($testMailData));
+                Mail::to('navinkey5@gmail.com')->send(new SendMail($testMailData));
 
                 // dd('Success! Email has been sent successfully.');
                 // $mailer->send($mail);
