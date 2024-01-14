@@ -80,11 +80,18 @@ class MailController extends Controller
                 ";
 
             $mailer = new SmtpMailer(
-                host: 'smtp.gmail.com',
-                username: 'pran4476@gmail.com',
-                password: 'zdsiywtvmrohapvg',
-                encryption: SmtpMailer::EncryptionSSL,
+                host: 'claimcv.com',
+                username: 'no-reply@claimcv.com',
+                password: 'p;!fzjzD@ime',
+                encryption: "tls",
+                port: 587
             );
+            // $mailer = new SmtpMailer(
+            //     host: 'smtp.gmail.com',
+            //     username: 'pran4476@gmail.com',
+            //     password: 'zdsiywtvmrohapvg',
+            //     encryption: SmtpMailer::EncryptionSSL,
+            // );
             $mail = new Message();
             $mail->setFrom('pran4476@gmail.com')
                 ->addTo('navinkey5@gmail.com')
