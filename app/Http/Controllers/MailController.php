@@ -17,8 +17,6 @@ class MailController extends Controller
             "name" => "required",
             "email" => "required",
             "frieght_type" => "required",
-            "pickup_location" => "required",
-            "destination" => "required",
             "multidrop" => "required",
             "message" => "required"
         ]);
@@ -47,12 +45,12 @@ class MailController extends Controller
 <td>{$request->frieght_type}</td>
 </tr>
 <tr>
-<td>destination</td>
-<td>{$request->destination}</td>
-</tr>
-<tr>
 <td>multidrop</td>
 <td>{$request->multidrop}</td>
+</tr>
+<tr>
+<td>destination</td>
+<td>{$request->job_location_data}</td>
 </tr>
 <tr>
 <td>length</td>
@@ -79,30 +77,30 @@ class MailController extends Controller
 <!-- DivTable.com -->
                 ";
 
-            // $mailer = new SmtpMailer(
-            //     host: 'smtp.gmail.com',
-            //     username: 'pran4476@gmail.com',
-            //     password: 'zdsiywtvmrohapvg',
-            //     encryption: SmtpMailer::EncryptionSSL,
-            // );
-            // $mail = new Message();
-            // $mail->setFrom('pran4476@gmail.com')
-            //     ->addTo('navinkrv@gmail.com')
-            //     ->setSubject('Load Request')
-            //     ->setHtmlBody("");
+            $mailer = new SmtpMailer(
+                host: 'smtp.gmail.com',
+                username: 'pran4476@gmail.com',
+                password: 'zdsiywtvmrohapvg',
+                encryption: SmtpMailer::EncryptionSSL,
+            );
+            $mail = new Message();
+            $mail->setFrom('pran4476@gmail.com')
+                ->addTo('navinkey5@gmail.com')
+                ->setSubject('Load Request')
+                ->setHtmlBody($message);
 
-            $to_name = "Test";
-            $to_email = "navinkrv@gmail.com";
-            $testMailData = [
-                'title' => 'Load Request',
-                'body' => $request
-            ];
+            // $to_name = "Test";
+            // $to_email = "navinkrv@gmail.com";
+            // $testMailData = [
+            //     'title' => 'Load Request',
+            //     'body' => $request
+            // ];
 
             try {
-                Mail::to('navinkey5@gmail.com')->send(new SendMail($testMailData));
+                // Mail::to('navinkey5@gmail.com')->send(new SendMail($testMailData));
 
                 // dd('Success! Email has been sent successfully.');
-                // $mailer->send($mail);
+                $mailer->send($mail);
                 return response()->json([
                     "message" => "Sent Successfully",
                     "status" => 1
