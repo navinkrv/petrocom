@@ -135,7 +135,7 @@ class JobController extends Controller
                 return response()->json([
                     "message" => "Success",
                     "status" => 1,
-                    "data" => array_slice($new_job_array, 0, 3)
+                    "data" => $new_job_array
                 ]);
             }
         } else {
