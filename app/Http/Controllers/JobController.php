@@ -264,7 +264,7 @@ class JobController extends Controller
             $final_job_arr = [];
             array_filter($new_job_array, function ($data) use ($fromDate, $toDate, &$final_job_arr) {
 
-                if (date_create($data->date) >= date_create($fromDate) && date_create($data->date) <= date_create($toDate)) {
+                if (date_create($data->created_at) >= date_create($fromDate) && date_create($data->created_at) <= date_create($toDate)) {
                     // return $data;
                     $final_job_arr[] = $data;
                 }
@@ -316,7 +316,7 @@ class JobController extends Controller
             $final_job_arr = [];
             array_filter($new_job_array, function ($data) use ($fromDate, $toDate, &$final_job_arr) {
 
-                if (date_create($data->date) >= date_create($fromDate) && date_create($data->date) <= date_create($toDate)) {
+                if (date_create($data->created_at) >= date_create($fromDate) && date_create($data->created_at) <= date_create($toDate)) {
                     // return $data;
                     $final_job_arr[] = $data;
                 }
