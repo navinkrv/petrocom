@@ -80,9 +80,9 @@ class MailController extends Controller
                 ";
 
             $mailer = new SmtpMailer(
-                host: 'claimcv.com',
-                username: 'no-reply@claimcv.com',
-                password: 'p;!fzjzD@ime',
+                host: 'smtp.zoho.in',
+                username: 'send.loads@petrocomlogistics.co.uk',
+                password: 'Sendloads@2989',
                 encryption: "tls",
                 port: 587
             );
@@ -93,7 +93,7 @@ class MailController extends Controller
             //     encryption: SmtpMailer::EncryptionSSL,
             // );
             $mail = new Message();
-            $mail->setFrom('pran4476@gmail.com')
+            $mail->setFrom('send.loads@petrocomlogistics.co.uk')
                 ->addTo('navinkey5@gmail.com')
                 ->setSubject('Load Request')
                 ->setHtmlBody($message);
