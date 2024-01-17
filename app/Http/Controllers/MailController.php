@@ -13,13 +13,7 @@ class MailController extends Controller
 {
     public function sendLoad(Request $request)
     {
-        // $validation = $request->validate([
-        //     "name" => "required",
-        //     "email" => "required",
-        //     "frieght_type" => "required",
-        //     "multidrop" => "required",
-        //     "message" => "required"
-        // ]);
+
         $validation = true;
 
 
@@ -86,29 +80,16 @@ class MailController extends Controller
                 encryption: "tls",
                 port: 587
             );
-            // $mailer = new SmtpMailer(
-            //     host: 'smtp.gmail.com',
-            //     username: 'pran4476@gmail.com',
-            //     password: 'zdsiywtvmrohapvg',
-            //     encryption: SmtpMailer::EncryptionSSL,
-            // );
+
             $mail = new Message();
             $mail->setFrom('send.loads@petrocomlogistics.co.uk')
-                ->addTo('navinkey5@gmail.com')
+                ->addTo('info@petrocomlogistics.co.uk')
                 ->setSubject('Load Request')
                 ->setHtmlBody($message);
 
-            // $to_name = "Test";
-            // $to_email = "navinkrv@gmail.com";
-            // $testMailData = [
-            //     'title' => 'Load Request',
-            //     'body' => $request
-            // ];
 
             try {
-                // Mail::to('navinkey5@gmail.com')->send(new SendMail($testMailData));
 
-                // dd('Success! Email has been sent successfully.');
                 $mailer->send($mail);
                 return response()->json([
                     "message" => "Sent Successfully",
